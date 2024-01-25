@@ -1,6 +1,6 @@
 package org.example.repositories;
 
-import org.example.exceptions.WordAlreadyExists;
+import org.example.exceptions.WordAlreadyExistsException;
 import org.example.exceptions.WordNotFoundException;
 import org.example.models.Word;
 
@@ -67,7 +67,7 @@ public class WordFileRepository implements WordRepository {
                 word.getDictionaryName(), word.getWord()
         );
         if (searchingWord.isPresent()) {
-            throw new WordAlreadyExists(word.getWord(), word.getDictionaryName());
+            throw new WordAlreadyExistsException(word.getWord(), word.getDictionaryName());
         }
 
         // save word

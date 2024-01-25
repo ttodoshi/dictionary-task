@@ -5,14 +5,18 @@ import org.example.controllers.WordController;
 import org.example.dtos.dictionary.GetDictionaryDto;
 import org.example.dtos.word.CreateWordDto;
 import org.example.dtos.word.GetWordDto;
-import org.example.exceptions.WordAlreadyExists;
+import org.example.exceptions.WordAlreadyExistsException;
 import org.example.exceptions.WordNotFoundException;
+import org.example.exceptions.WordNotValidException;
 import org.example.repositories.DictionaryFileRepository;
 import org.example.repositories.WordFileRepository;
 import org.example.services.DictionaryServiceImpl;
 import org.example.services.WordServiceImpl;
+import org.example.utils.validators.FourLatinDictionaryValidator;
+import org.example.utils.validators.FiveDigitDictionaryValidator;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class App {
@@ -26,9 +30,18 @@ public class App {
                         new DictionaryFileRepository()
                 )
         );
+
+        FourLatinDictionaryValidator fourLatinDictionaryValidator = new FourLatinDictionaryValidator();
+        FiveDigitDictionaryValidator fiveDigitDictionaryValidator = new FiveDigitDictionaryValidator();
         wordController = new WordController(
                 new WordServiceImpl(
-                        new WordFileRepository()
+                        new WordFileRepository(),
+                        Map.of(
+                                fourLatinDictionaryValidator.getDictionaryName(),
+                                fourLatinDictionaryValidator,
+                                fiveDigitDictionaryValidator.getDictionaryName(),
+                                fiveDigitDictionaryValidator
+                        )
                 )
         );
     }
@@ -152,7 +165,7 @@ public class App {
             );
 
             System.out.printf("Сохранена запись: %s - %s\n", savedWord.getWord(), savedWord.getTranslation());
-        } catch (WordAlreadyExists e) {
+        } catch (WordAlreadyExistsException | WordNotValidException e) {
             System.out.println(e.getMessage());
         }
     }
