@@ -9,14 +9,13 @@ import org.example.exceptions.WordAlreadyExistsException;
 import org.example.exceptions.WordNotFoundException;
 import org.example.exceptions.WordNotValidException;
 import org.example.repositories.DictionaryFileRepository;
+import org.example.repositories.DictionaryRepository;
 import org.example.repositories.WordFileRepository;
 import org.example.services.DictionaryServiceImpl;
 import org.example.services.WordServiceImpl;
-import org.example.utils.validators.FourLatinDictionaryValidator;
-import org.example.utils.validators.FiveDigitDictionaryValidator;
+import org.example.utils.validators.DictionaryValidator;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class App {
@@ -25,23 +24,19 @@ public class App {
     private static final WordController wordController;
 
     static {
+        // dependency injection
+        DictionaryRepository dictionaryRepository = new DictionaryFileRepository();
         dictionaryController = new DictionaryController(
                 new DictionaryServiceImpl(
-                        new DictionaryFileRepository()
+                        dictionaryRepository
                 )
         );
 
-        FourLatinDictionaryValidator fourLatinDictionaryValidator = new FourLatinDictionaryValidator();
-        FiveDigitDictionaryValidator fiveDigitDictionaryValidator = new FiveDigitDictionaryValidator();
         wordController = new WordController(
                 new WordServiceImpl(
                         new WordFileRepository(),
-                        Map.of(
-                                fourLatinDictionaryValidator.getDictionaryName(),
-                                fourLatinDictionaryValidator,
-                                fiveDigitDictionaryValidator.getDictionaryName(),
-                                fiveDigitDictionaryValidator
-                        )
+                        dictionaryRepository,
+                        new DictionaryValidator()
                 )
         );
     }

@@ -9,7 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class WordFileRepository implements WordRepository {
@@ -85,7 +88,10 @@ public class WordFileRepository implements WordRepository {
             List<String> allWords = Files.readAllLines(wordsFile);
             List<String> remainingLines = allWords
                     .stream()
-                    .filter(line -> !(line.contains(dictionaryName) && line.contains(word)))
+                    .filter(line -> {
+                        String[] wordInformation = line.split("\\|");
+                        return !(wordInformation[0].equals(dictionaryName) && wordInformation[1].equals(word));
+                    })
                     .collect(Collectors.toList());
             // check if word not found
             if (remainingLines.size() == allWords.size()) {
