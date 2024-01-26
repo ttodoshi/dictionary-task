@@ -3,6 +3,7 @@ package org.example.services;
 import org.example.dtos.word.CreateWordDto;
 import org.example.dtos.word.GetWordDto;
 import org.example.exceptions.DictionaryNotFoundException;
+import org.example.exceptions.TranslationNotValidException;
 import org.example.exceptions.WordNotFoundException;
 import org.example.exceptions.WordNotValidException;
 import org.example.models.Dictionary;
@@ -54,6 +55,9 @@ public class WordServiceImpl implements WordService {
                 ));
         if (!dictionaryValidator.isWordValid(createWordDto.getWord(), dictionary.getPattern())) {
             throw new WordNotValidException(createWordDto.getWord(), dictionaryName);
+        }
+        if (!dictionaryValidator.isTranslationValid(createWordDto.getTranslation())) {
+            throw new TranslationNotValidException(createWordDto.getTranslation());
         }
 
         return WordMapper.mapWordToGetWordDto(
