@@ -7,4 +7,8 @@ public class DictionaryValidator {
         Pattern r = Pattern.compile(pattern);
         return r.matcher(word).matches();
     }
+
+    public boolean isTranslationValid(String translation) {
+        return !translation.isBlank();
+    }
 }

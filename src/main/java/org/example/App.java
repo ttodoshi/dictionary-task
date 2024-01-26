@@ -5,6 +5,7 @@ import org.example.controllers.WordController;
 import org.example.dtos.dictionary.GetDictionaryDto;
 import org.example.dtos.word.CreateWordDto;
 import org.example.dtos.word.GetWordDto;
+import org.example.exceptions.TranslationNotValidException;
 import org.example.exceptions.WordAlreadyExistsException;
 import org.example.exceptions.WordNotFoundException;
 import org.example.exceptions.WordNotValidException;
@@ -160,7 +161,7 @@ public class App {
             );
 
             System.out.printf("Сохранена запись: %s - %s\n", savedWord.getWord(), savedWord.getTranslation());
-        } catch (WordAlreadyExistsException | WordNotValidException e) {
+        } catch (WordAlreadyExistsException | WordNotValidException | TranslationNotValidException e) {
             System.out.println(e.getMessage());
         }
     }
