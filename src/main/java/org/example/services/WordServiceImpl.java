@@ -2,24 +2,28 @@ package org.example.services;
 
 import org.example.dtos.word.CreateWordDto;
 import org.example.dtos.word.GetWordDto;
+import org.example.exceptions.DictionaryNotFoundException;
 import org.example.exceptions.WordNotFoundException;
 import org.example.exceptions.WordNotValidException;
+import org.example.models.Dictionary;
 import org.example.models.Word;
+import org.example.repositories.DictionaryRepository;
 import org.example.repositories.WordRepository;
 import org.example.utils.mappers.WordMapper;
 import org.example.utils.validators.DictionaryValidator;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class WordServiceImpl implements WordService {
     private final WordRepository wordRepository;
-    private final Map<String, DictionaryValidator> dictionaryValidatorMap;
+    private final DictionaryRepository dictionaryRepository;
+    private final DictionaryValidator dictionaryValidator;
 
-    public WordServiceImpl(WordRepository wordRepository, Map<String, DictionaryValidator> dictionaryValidatorMap) {
+    public WordServiceImpl(WordRepository wordRepository, DictionaryRepository dictionaryRepository, DictionaryValidator dictionaryValidator) {
         this.wordRepository = wordRepository;
-        this.dictionaryValidatorMap = dictionaryValidatorMap;
+        this.dictionaryRepository = dictionaryRepository;
+        this.dictionaryValidator = dictionaryValidator;
     }
 
     @Override
@@ -43,8 +47,12 @@ public class WordServiceImpl implements WordService {
     @Override
     public GetWordDto saveWord(String dictionaryName, CreateWordDto createWordDto) {
         // word valid for this dictionary
-        DictionaryValidator dictionaryValidator = dictionaryValidatorMap.get(dictionaryName);
-        if (dictionaryValidator != null && !dictionaryValidator.isWordValid(createWordDto.getWord())) {
+        Dictionary dictionary = dictionaryRepository
+                .findDictionaryByDictionaryName(dictionaryName)
+                .orElseThrow(() -> new DictionaryNotFoundException(
+                        dictionaryName
+                ));
+        if (!dictionaryValidator.isWordValid(createWordDto.getWord(), dictionary.getPattern())) {
             throw new WordNotValidException(createWordDto.getWord(), dictionaryName);
         }
 

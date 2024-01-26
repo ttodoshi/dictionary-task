@@ -1,7 +1,10 @@
 package org.example.utils.validators;
 
-public interface DictionaryValidator {
-    boolean isWordValid(String word);
+import java.util.regex.Pattern;
 
-    String getDictionaryName();
+public class DictionaryValidator {
+    public boolean isWordValid(String word, String pattern) {
+        Pattern r = Pattern.compile(pattern);
+        return r.matcher(word).matches();
+    }
 }
