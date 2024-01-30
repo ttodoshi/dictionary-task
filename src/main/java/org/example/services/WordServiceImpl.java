@@ -10,7 +10,7 @@ import org.example.models.Dictionary;
 import org.example.models.Word;
 import org.example.repositories.DictionaryRepository;
 import org.example.repositories.WordRepository;
-import org.example.utils.mappers.WordMapper;
+import org.example.mappers.WordMapper;
 import org.example.utils.validators.DictionaryValidator;
 
 import java.util.List;
