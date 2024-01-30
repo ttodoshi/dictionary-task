@@ -2,7 +2,7 @@ package org.example.services;
 
 import org.example.dtos.dictionary.GetDictionaryDto;
 import org.example.repositories.DictionaryRepository;
-import org.example.utils.mappers.DictionaryMapper;
+import org.example.mappers.DictionaryMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;

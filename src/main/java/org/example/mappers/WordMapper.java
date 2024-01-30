@@ -1,4 +1,4 @@
-package org.example.utils.mappers;
+package org.example.mappers;
 
 import org.example.dtos.word.GetWordDto;
 import org.example.models.Word;

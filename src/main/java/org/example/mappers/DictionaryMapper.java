@@ -1,4 +1,4 @@
-package org.example.utils.mappers;
+package org.example.mappers;
 
 import org.example.dtos.dictionary.GetDictionaryDto;
 import org.example.models.Dictionary;
