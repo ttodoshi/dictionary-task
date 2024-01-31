@@ -1,12 +1,9 @@
 package org.example.repositories;
 
 import org.example.models.Dictionary;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
-public interface DictionaryRepository {
-    List<Dictionary> findAll();
-
-    Optional<Dictionary> findDictionaryByDictionaryName(String dictionaryName);
+public interface DictionaryRepository extends JpaRepository<Dictionary, UUID> {
 }
