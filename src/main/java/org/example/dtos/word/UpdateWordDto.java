@@ -1,13 +1,11 @@
 package org.example.dtos.word;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class GetWordDto {
-    private UUID uuid;
-    private UUID dictionaryUuid;
+public class UpdateWordDto {
     private String word;
+    @NotBlank
     private String translation;
 }

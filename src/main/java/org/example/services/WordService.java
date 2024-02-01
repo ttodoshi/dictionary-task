@@ -2,15 +2,20 @@ package org.example.services;
 
 import org.example.dtos.word.CreateWordDto;
 import org.example.dtos.word.GetWordDto;
+import org.example.dtos.word.UpdateWordDto;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public interface WordService {
-    List<GetWordDto> findWordsByDictionaryName(String dictionaryName);
+    List<GetWordDto> findWordsByDictionaryUuidAndWord(UUID dictionaryUuid, String word);
 
-    GetWordDto findWordByDictionaryNameAndWord(String dictionaryName, String word);
+    List<GetWordDto> findWordsByWord(String word);
 
-    GetWordDto saveWord(String dictionaryName, CreateWordDto createWordDto);
+    Map.Entry<String, UUID> addWordToDictionary(UUID dictionaryUuid, CreateWordDto createWordDto);
 
-    void deleteWordByDictionaryNameAndWord(String dictionaryName, String word);
+    GetWordDto updateWord(UUID dictionaryUuid, UUID wordUuid, UpdateWordDto updateWordDto);
+
+    void deleteWordByDictionaryUuidAndWord(UUID dictionaryUuid, String word);
 }
